@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="test">
+	<!-- 
+		id属性要求唯一
+		parameterType属性:参数类型(要写类的完整名字)
+	 -->
+	<insert id="save" parameterType="entity.Employee">
+		INSERT INTO t_emp
+		VALUES(t_emp_seq.nextval,#{name},#{age},#{salary})
+	</insert>
+	
+	<select id="findAll" resultType="entity.Employee">
+		SELECT * FROM t_emp
+	</select>
+	
+	<select id="findById" parameterType="int" resultType="entity.Employee">
+		SELECT * FROM t_emp WHERE id=#{id1}
+	</select>
+	
+	<update id="update" parameterType="entity.Employee">
+		UPDATE t_emp SET name=#{name},age=#{age},salary=#{salary}
+		WHERE id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM t_emp WHERE id=#{id1}
+	</delete>
+	
+	<!-- 
+		返回Map类型的结果
+		map是java.util.Map的简写 -->
+	<select id="findById2" parameterType="int" resultType="map">
+		SELECT * FROM t_emp
+		WHERE id=#{id2}
+	</select>
+	<!-- 
+		设置实体类的属性名与表字段名的对应关系
+		只需要将不一致的列出来
+	 -->
+	<resultMap type="entity.Emp" id="empResultMap">
+		<result property="empNo" column="id"/>
+		<result property="ename" column="name"/>
+	</resultMap>
+	<select id="findById3" parameterType="int" resultMap="empResultMap">
+		SELECT * FROM t_emp
+		WHERE id=#{id3}
+	</select>
+</mapper>
